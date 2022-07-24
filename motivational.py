@@ -4,14 +4,13 @@ from flask import request as flrq
 from twilio.twiml.messaging_response import MessagingResponse 
 from textblob import TextBlob
 from random import randint
-from urllib import parse
 import asyncio, aiohttp, os, json
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 load_dotenv()
 motkn = os.environ['GIPHY_MOTIVATIONAL']
 url = "https://api.giphy.com/v1/gifs/translate?api_key={}&s={}&weirdness={}&limit={}" #gif url
-qurl = 'https://zenquotes.io/api/random' #quotes url
+qurl = 'https://zenquotes.io/api/random/' #quotes url
 durl = 'https://zenquotes.io/api/today/' #today's quote
 app = Flask(__name__)
 
@@ -37,7 +36,7 @@ async def qot_get(client, stmt):
         return f"I'm glad that you feel good today. Here's something to ponder on: {author} once said '{quote}'"
 
 
-async def all_api(qry, stmt, if_zero = False):
+async def all_api(qry, stmt):
     async with aiohttp.ClientSession() as client:
         gif_string = await gif_get(client, qry)
         quote_string = await qot_get(client, stmt)
