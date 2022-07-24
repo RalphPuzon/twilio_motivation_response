@@ -5,7 +5,6 @@ from twilio.twiml.messaging_response import MessagingResponse
 from textblob import TextBlob
 from random import randint
 from urllib import parse
-from urllib import request as ulrq
 import asyncio, aiohttp, os, json
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
@@ -17,39 +16,8 @@ durl = 'https://zenquotes.io/api/today/' #today's quote
 app = Flask(__name__)
 
 
-# def get_gif(qry):
-#     params = parse.urlencode(
-#         {
-#             "s": qry,
-#             "api_key": motkn,
-#             "weirdness": randint(0, 6),
-#             "limit": 1
-#         }
-#     )
-
-#     with ulrq.urlopen("".join((url, "?", params))) as response:
-#         gif_data = json.loads(response.read())
-    
-#     return gif_data["data"]["id"]
-
-
-# def get_quote(stmt):
-#     if stmt < 0:
-#         with ulrq.urlopen(qurl) as response:
-#             q_data = json.loads(response.read())
-#             author = q_data[0]["a"]
-#             quote = q_data[0]["q"]
-#         return f"I'm sorry you feel that way. As parting advice, {author} once said '{quote}'"
-#     elif stmt > 0:
-#         with ulrq.urlopen(durl) as response:
-#             q_data = json.loads(response.read())
-#             author = q_data[0]["a"]
-#             quote = q_data[0]["q"]
-#         return f"I'm glad that you feel good today. Here's something to ponder on: {author} once said '{quote}'"
-
-
 async def gif_get(client, qry):
-    async with client.get(url.format(motkn, qry, 1, 1)) as gif_rsp:
+    async with client.get(url.format(motkn, qry, randint(0, 7), 1)) as gif_rsp:
         gif_id = json.loads(await gif_rsp.text())['data']['id']
     return f"https://media.giphy.com/media/{gif_id}/giphy.gif"
 
@@ -108,31 +76,7 @@ def sms_reply():
             msg = resp.message("I can't tell how you're feeling. Here's a cute animal instead")
             msg.media(gif_s)
             return str(resp)
-        
-        # # Add message
-        # if sms_sentiment < 0:
-        #     gif_id = get_gif('daily motivational gif')
-        #     msg = resp.message(get_quote(sms_sentiment))
-        #     msg.media(
-        #     f"https://media.giphy.com/media/{gif_id}/giphy.gif" 
-        #     )
-        #     return str(resp)
-        
-        # elif sms_sentiment > 0:
-        #     gif_id = get_gif('live in the moment')
-        #     msg = resp.message(get_quote(sms_sentiment))
-        #     msg.media(
-        #         f"https://media.giphy.com/media/{gif_id}/giphy.gif"
-        #     )
-        #     return str(resp)
-        
-        # else:
-        #     gif_id = get_gif('cute animal')
-        #     msg = resp.message("I can't tell how you're feeling. Here's a cute animal instead")
-        #     msg.media(
-        #         f"https://media.giphy.com/media/{gif_id}/giphy.gif"
-        #     )
-        #     return str(resp)
+
         
     except Exception as e:
         print(e)
