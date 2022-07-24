@@ -1,6 +1,6 @@
-#TWILIO MOTIATIONAL RESPONSE
+# TWILIO MOTIATIONAL RESPONSE
 
-####Text how you're feeling to the twilio number, and receive a mood gif and an appropriate quote
+#### Text how you're feeling to the twilio number, and receive a mood gif and an appropriate quote
 
-#####TODOS:
+##### TODOS:
 - improve API speed.
